@@ -42,19 +42,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     text = (
-        "<b>Welcome to Instant Cover Bot</b>\n\n"
-        "🎬 <b>Professional Video Cover Tool</b>\n\n"
-        "✨ <b>What you can do:</b>\n"
-        "📸 Upload a <b>photo</b> as your thumbnail\n"
-        "🎥 Send a <b>video</b> to apply the cover instantly\n\n"
-        "⚡ Features:\n"
-        "⚙️ One-click thumbnail application\n"
-        "🎨 Professional video covers\n"
-        "📁 Automatic thumbnail management\n\n"
-        "🧭 <b>Quick Links:</b>\n"
-        "/help – Learn how to use\n"
-        "/settings – Manage your content\n"
-        "/about – About this bot"
+        "<b>Welcome to SS Instant Cover Changer Bot</b>\n\n"
+        "✨ <b>What You Can Do</b>\n"
+        "📸 Upload A <b>Photo</b> As Your Thumbnail\n"
+        "🎥 Send A <b>Video</b> To Apply The Cover Instantly\n\n"
+        "⚡ Features \n"
+        "⚙️ One-Click Thumbnail Bot\n"
+        "🎨 Professional Video Covers\n"
+        "📁 Automatic Thumbnail Management\n\n"
+        "🧭 <b>Quick Links </b>\n"
+        "/help – Learn How To Use\n"
+        "/settings – Manage Your Content\n"
+        "/about – About This Bot"
     )
     # Build home menu with all buttons
     kb_rows = [
@@ -109,21 +108,21 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not await check_force_sub(update, context):
         return
     text = (
-        "📖 <b>How to Use Instant Cover Bot</b>\n\n"
-        "🎯 <b>Step-by-Step Guide:</b>\n\n"
+        "📖 <b>How To Use SS Instant Cover Changer Bot</b>\n\n"
+        "🎯 <b>Step-By-Step Guide:</b>\n\n"
         "1️⃣ <b>Upload Your Thumbnail</b>\n"
-        "   Send a photo that you want as your video cover\n"
-        "   The photo will be saved automatically\n\n"
-        "2️⃣ <b>Apply to Videos</b>\n"
-        "   Send any video to the bot\n"
-        "   The saved thumbnail will be applied instantly\n\n"
+        "   Send A Photo That You Want As Your Video Cover\n"
+        "   The Photo Will Be Saved Automatically\n\n"
+        "2️⃣ <b>Apply To Videos</b>\n"
+        "   Send Any Video To The Bot\n"
+        "   The Saved Thumbnail Will Be Applied Instantly\n\n"
         "3️⃣ <b>Download & Share</b>\n"
-        "   Your video with the cover is ready to download\n\n"
-        "💡 <b>Pro Tips:</b>\n"
-        "• High-quality photos work best\n"
-        "• Update your thumbnail anytime\n"
-        "• Remove old thumbnails from Settings\n\n"
-        "❓ Need more help? Contact support or check /about"
+        "   Your Video With The Cover Is Ready To Share\n\n"
+        "💡 <b>Pro Tips </b>\n"
+        "• High-Quality Photos Work Best\n"
+        "• Update Your Thumbnail Anytime\n"
+        "• Remove Old Thumbnails From Settings\n\n"
+        "❓ Need More Help? Contact Spport @Sunil_Sharma_2_0_Bot"
     )
     await update.message.reply_text(text, parse_mode="HTML")
 
@@ -132,24 +131,24 @@ async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not await check_force_sub(update, context):
         return
     text = (
-        "🤖 <b>About Instant Cover Bot</b>\n\n"
-        "📝 <b>Description:</b>\n"
-        "A powerful and intuitive tool for applying custom thumbnails to your videos.\n\n"
-        "⭐ <b>Key Features:</b>\n"
-        "✅ Lightning-fast thumbnail application\n"
-        "✅ One photo per user storage\n"
-        "✅ Professional video covers\n"
-        "✅ Easy-to-use interface\n"
-        "✅ Instant processing\n\n"
-        "🛠️ <b>Technology:</b>\n"
-        "Built with Python & Telegram Bot API\n"
-        "Powered by FFmpeg for video processing\n\n"
-        "📊 <b>Statistics:</b>\n"
-        f"👥 Active Users: Check with /stats\n\n"
-        "💬 <b>Support & Contact:</b>\n"
-        f"👨‍💻 Developer: @{OWNER_USERNAME or 'contact_owner'}\n"
-        "📧 For issues or suggestions, reach out anytime\n\n"
-        "Thank you for using Instant Cover Bot! 🎬"
+        "🤖 <b>About SS Instant Cover Changer Bot</b>\n\n"
+        "📝 <b>Description </b>\n"
+        "A Powerful And Intuitive Tool For Applying Custom Thumbnails To Your Videos.\n\n"
+        "⭐ <b>Key Features</b>\n"
+        "✅ Lightning-Fast Thumbnail Application\n"
+        "✅ One Photo Per User Storage\n"
+        "✅ Professional Video Covers\n"
+        "✅ Easy-To-Use Interface\n"
+        "✅ Instant Processing\n\n"
+        "🛠️ <b>Technology </b>\n"
+        "Built With Python & Telegram Bot API\n"
+        "Powered By @SSBotsUpdates\n\n"
+        "📊 <b>Statistics </b>\n"
+        f"👥 Active Users : Check With /stats\n\n"
+        "💬 <b>Support & Contact :</b>\n"
+        f"👨‍💻 Developer : @{OWNER_USERNAME or 'contact_owner'}\n"
+        "📧 For Issues Or Suggestions, Reach Out Anytime\n\n"
+        "Thank You For Using Instant Cover Bot! 🎬"
     )
     await update.message.reply_text(text, parse_mode="HTML")
 
@@ -163,11 +162,11 @@ async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     text = (
         "⚙️ <b>Settings & Preferences</b>\n\n"
-        "👤 <b>Your Account:</b>\n"
-        f"User ID: <code>{user_id}</code>\n\n"
-        "🖼️ <b>Thumbnail Status:</b>\n"
+        "👤 <b>Your Account </b>\n"
+        f"User ID : <code>{user_id}</code>\n\n"
+        "🖼️ <b>Thumbnail Status </b>\n"
         f"<b>{thumb_status}</b>\n\n"
-        "📋 <b>What you can manage:</b>"
+        "📋 <b>What You Can Manage </b>"
     )
     settings_kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("🖼 Thumbnails", callback_data="submenu_thumbnails")],
@@ -189,4 +188,4 @@ async def remover(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await send_log(context, log_msg)
         
         return await update.message.reply_text("✅ <b>Thumbnail Removed Successfully</b>\n\nYour thumbnail has been deleted. Upload a new one anytime!", reply_to_message_id=update.message.message_id, parse_mode="HTML")
-    await update.message.reply_text("⚠️ <b>No Thumbnail to Remove</b>\n\nYou haven't saved a thumbnail yet. Send a photo first!", reply_to_message_id=update.message.message_id, parse_mode="HTML")
+    await update.message.reply_text("⚠️ <b>No Thumbnail To Remove</b>\n\nYou Haven't Saved Any Thumbnail Yet. Send A Photo First!", reply_to_message_id=update.message.message_id, parse_mode="HTML")
