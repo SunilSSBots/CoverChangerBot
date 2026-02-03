@@ -37,7 +37,7 @@ async def open_home(update: Update, context: ContextTypes.DEFAULT_TYPE):
         kb = [
             [
                 InlineKeyboardButton("📸 Set Thumbnail", callback_data="set_thumbnail"),
-                InlineKeyboardButton("🎬 Apply to Video", callback_data="apply_cover"),
+                InlineKeyboardButton("🎬 Apply To Video", callback_data="apply_cover"),
             ],
             [
                 InlineKeyboardButton("👀 View Thumbnail", callback_data="view_thumb"),
@@ -57,14 +57,14 @@ async def open_home(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Build message
         has_thumb = has_thumbnail(user_id)
-        thumb_status = "✅ Thumbnail saved" if has_thumb else "❌ No thumbnail yet"
+        thumb_status = "✅ Thumbnail Saved" if has_thumb else "❌ No Thumbnail Yet"
         
         home_text = (
-            f"👋 Welcome back, <b>{user_name}</b>!\n\n"
-            f"<b>📊 Your Status:</b>\n"
+            f"👋 Welcome Back, <b>{user_name}</b>!\n\n"
+            f"<b>📊 Your Status </b>\n"
             f"• {thumb_status}\n\n"
-            f"<b>What would you like to do?</b>\n"
-            "Use the buttons below to manage your thumbnails."
+            f"<b>What Would You Like To Do?</b>\n"
+            "Use The Buttons Below To Manage Your Thumbnails."
         )
         
         try:
@@ -150,23 +150,23 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     
                     await query.edit_message_text(
                         "✅ <b>Verification Successful!</b>\n\n"
-                        "You have joined the channel. You can now use all features of this bot.\n\n"
-                        "Use /start to go to the home menu.",
+                        "You Have Joined The Channel. You Can Now Use All Features Of This Bot.\n\n"
+                        "Use /start To Go To The Home Menu.",
                         parse_mode="HTML"
                     )
                     log_msg = (
                         f"✅ <b>User Verified</b>\n"
-                        f"User ID: <code>{user_id}</code>\n"
-                        f"Username: @{update.effective_user.username or 'N/A'}\n"
-                        f"Status: Channel member verified"
+                        f"User ID : <code>{user_id}</code>\n"
+                        f"Username : @{update.effective_user.username or 'N/A'}\n"
+                        f"Status : Channel Member Verified"
                     )
                     await send_log(context, log_msg)
                     logger.info(f"✅ User {user_id} verified successfully")
                 else:
                     await query.edit_message_text(
                         "❌ <b>Verification Failed</b>\n\n"
-                        "It seems you haven't joined the channel yet or are not a member.\n\n"
-                        "Please join the channel first, then try again.",
+                        "It Seems You Haven't Joined Our Update Channel Yet Or Are Not A Member.\n\n"
+                        "Please Join Our Update Channel First, Then Try Again.",
                         parse_mode="HTML"
                     )
                     logger.warning(f"⚠️ User {user_id} failed verification - not a member")
@@ -187,10 +187,10 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         elif data == "set_thumbnail":
             await query.edit_message_text(
                 "📸 <b>Set Thumbnail</b>\n\n"
-                "Send me an image to use as your thumbnail.\n\n"
-                "<i>Supported formats: JPG, PNG</i>\n"
-                "<i>Max size: 5 MB</i>\n\n"
-                "✋ Or send /cancel to go back.",
+                "Send Me An Image To Use As Your Thumbnail.\n\n"
+                "<i>Supported Formats : JPG, PNG</i>\n"
+                "<i>Max Size : 5 MB</i>\n\n"
+                "✋ Or Send /cancel To Go Back.",
                 parse_mode="HTML"
             )
             context.user_data['waiting_for_thumb'] = True
@@ -201,17 +201,16 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if not has_thumb:
                 await query.edit_message_text(
                     "❌ <b>No Thumbnail</b>\n\n"
-                    "You don't have a saved thumbnail yet.\n\n"
-                    "Please set a thumbnail first using the '📸 Set Thumbnail' button.",
+                    "You Don't Have A Saved Thumbnail Yet.\n\n"
+                    "Please Set A Thumbnail First Using The '📸 Set Thumbnail' Button.",
                     parse_mode="HTML"
                 )
             else:
                 await query.edit_message_text(
-                    "🎬 <b>Apply Thumbnail to Video</b>\n\n"
-                    "Send me a video and I'll apply your saved thumbnail as the cover.\n\n"
-                    "<i>Supported formats: MP4, WebM</i>\n"
-                    "<i>Max size: 50 MB</i>\n\n"
-                    "✋ Or send /cancel to go back.",
+                    "🎬 <b>Apply Thumbnail To Video</b>\n\n"
+                    "Send Me A Video and I'll Apply Your Saved Thumbnail As The Cover.\n\n"
+                    "<i>Supported formats : MP4, MKV Video</i>\n"
+                    "✋ Or Send /cancel To Go Back.",
                     parse_mode="HTML"
                 )
                 context.user_data['waiting_for_video'] = True
@@ -222,7 +221,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if not has_thumb:
                 await query.edit_message_text(
                     "❌ <b>No Thumbnail</b>\n\n"
-                    "You don't have a saved thumbnail yet.",
+                    "You Don't Have A Saved Thumbnail Yet.",
                     parse_mode="HTML"
                 )
             else:
@@ -234,10 +233,10 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         caption="🖼️ <b>Your Saved Thumbnail</b>",
                         parse_mode="HTML"
                     )
-                    await query.answer("✅ Thumbnail sent in a new message", show_alert=False)
+                    await query.answer("✅ Thumbnail Sent In A New Message", show_alert=False)
                 except Exception as e:
                     logger.error(f"Error viewing thumbnail: {e}")
-                    await query.answer("❌ Could not load thumbnail", show_alert=True)
+                    await query.answer("❌ Could Not Load Thumbnail", show_alert=True)
         
         # Remove thumbnail
         elif data == "remove_thumb":
@@ -245,7 +244,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if not has_thumb:
                 await query.edit_message_text(
                     "❌ <b>No Thumbnail</b>\n\n"
-                    "You don't have a saved thumbnail to remove.",
+                    "You Don't Have A Saved Thumbnail To Remove.",
                     parse_mode="HTML"
                 )
             else:
@@ -258,8 +257,8 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 
                 await query.edit_message_text(
                     "✅ <b>Thumbnail Removed</b>\n\n"
-                    "Your saved thumbnail has been successfully deleted.\n\n"
-                    "You can set a new one anytime using the '📸 Set Thumbnail' button.",
+                    "Your Saved Thumbnail Has Been Successfully Deleted.\n\n"
+                    "You Can Set A New One Anytime Using The '📸 Set Thumbnail' Button.",
                     parse_mode="HTML"
                 )
         
@@ -268,16 +267,16 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user_info = f"User ID: <code>{user_id}</code>"
             
             kb = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🏠 Back to Home", callback_data="home_menu")]
+                [InlineKeyboardButton("🏠 Back To Home", callback_data="home_menu")]
             ])
             
             await query.edit_message_text(
                 f"⚙️ <b>Your Settings</b>\n\n"
                 f"{user_info}\n\n"
-                f"<b>Account Status:</b>\n"
-                f"• Status: Active\n"
-                f"• Thumbnail: {'✅ Saved' if has_thumbnail(user_id) else '❌ Not set'}\n\n"
-                f"<i>More settings coming soon...</i>",
+                f"<b>Account Status </b>\n"
+                f"• Status : Active\n"
+                f"• Thumbnail : {'✅ Saved' if has_thumbnail(user_id) else '❌ Not Set'}\n\n"
+                f"<i>More Settings Coming Soon...</i>",
                 reply_markup=kb,
                 parse_mode="HTML"
             )
@@ -285,27 +284,27 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Help menu
         elif data == "help_menu":
             help_text = (
-                "ℹ️ <b>How to Use This Bot</b>\n\n"
+                "ℹ️ <b>How To Use This Bot</b>\n\n"
                 "<b>📸 Set Thumbnail:</b>\n"
-                "1. Click the '📸 Set Thumbnail' button\n"
-                "2. Send an image\n"
-                "3. Your thumbnail is saved\n\n"
-                "<b>🎬 Apply to Video:</b>\n"
-                "1. Save a thumbnail first\n"
-                "2. Click '🎬 Apply to Video'\n"
-                "3. Send a video file\n"
-                "4. Wait for processing\n"
-                "5. Download the video with thumbnail\n\n"
-                "<b>👀 View/Remove:</b>\n"
-                "Use the buttons to view or delete your thumbnail.\n\n"
-                "⚠️ <b>Important:</b>\n"
+                "1. Click The '📸 Set Thumbnail' Button\n"
+                "2. Send An Image\n"
+                "3. Your Thumbnail Is Saved\n\n"
+                "<b>🎬 Apply To Video:</b>\n"
+                "1. Save A Thumbnail First\n"
+                "2. Click '🎬 Apply To Video'\n"
+                "3. Send A Video File\n"
+                "4. Wait For Processing\n"
+                "5. Get The Video With Your Cover Image Thumbnail\n\n"
+                "<b>👀 View/Remove </b>\n"
+                "Use The Buttons To View Or Delete Your Thumbnail.\n\n"
+                "⚠️ <b>Important </b>\n"
                 "• Keep your images under 5 MB\n"
-                "• Keep videos under 50 MB\n"
+                "• This Bot Supports Only Video File Not Document File\n"
                 "• Processing may take a few seconds"
             )
             
             kb = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🏠 Back to Home", callback_data="home_menu")]
+                [InlineKeyboardButton("🏠 Back To Home", callback_data="home_menu")]
             ])
             
             await query.edit_message_text(
@@ -382,12 +381,12 @@ async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=kb,
             parse_mode="HTML"
         )
-        logger.info(f"✅ Thumbnail saved for user {user_id}")
+        logger.info(f"✅ Thumbnail Saved for user {user_id}")
         
     except Exception as e:
         logger.error(f"photo_handler error: {e}", exc_info=True)
         await update.message.reply_text(
-            f"❌ <b>Error</b>\n\nFailed to save thumbnail: {str(e)[:100]}"
+            f"❌ <b>Error</b>\n\nFailed To Save Thumbnail: {str(e)[:100]}"
         )
 
 
@@ -402,8 +401,8 @@ async def video_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Check if user is waiting for video
         if not context.user_data.get('waiting_for_video', False):
             await update.message.reply_text(
-                "💭 I'm not expecting any videos right now.\n\n"
-                "Use /start and click '🎬 Apply to Video' to upload a video."
+                "💭 I'm Not Expecting Any Videos Right Now.\n\n"
+                "Use /start And Click '🎬 Apply To Video' To Upload A Video."
             )
             return
         
@@ -412,8 +411,8 @@ async def video_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Check if user has thumbnail
         if not has_thumbnail(user_id):
             await update.message.reply_text(
-                "❌ You don't have a thumbnail set yet.\n\n"
-                "Please set a thumbnail first."
+                "❌ You Don't Have Any Thumbnail Set Yet.\n\n"
+                "Please Set A Thumbnail First."
             )
             return
         
