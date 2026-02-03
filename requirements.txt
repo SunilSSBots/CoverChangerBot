@@ -1,19 +1,4 @@
-# ═══════════════════════════════════════════════════════════
-# Video Cover Bot - Python Dependencies
-# ═══════════════════════════════════════════════════════════
-
-# Telegram Bot Framework (async support)
-python-telegram-bot>=20.0
-
-# Environment variables management
-python-dotenv>=0.19.0
-
-# MongoDB database driver
-pymongo>=4.0
-
-# System monitoring (CPU, RAM, etc.)
-psutil>=5.8.0
-
-# ═══════════════════════════════════════════════════════════
-# Installation: pip install -r requirements.txt
-# ═══════════════════════════════════════════════════════════
+python-telegram-bot
+python-dotenv
+pymongo
+psutil
