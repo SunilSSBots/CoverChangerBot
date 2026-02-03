@@ -30,12 +30,12 @@ async def admin_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = (
         "🛡️ <b>Admin Control Panel</b>\n\n"
         "👑 <b>Welcome Admin!</b>\n\n"
-        "You have full access to all bot management tools:\n\n"
-        "📊 View detailed statistics\n"
-        "⏱️ Monitor bot performance\n"
-        "🚫 Ban/Unban users\n"
-        "📢 Send announcements to all users\n\n"
-        "Choose an option below:"
+        "You Have Full Access To All Of These Management Tools:\n\n"
+        "📊 View Detailed Statistics\n"
+        "⏱️ Monitor Bot Performance\n"
+        "🚫 Ban/Unban Users\n"
+        "📢 Send Announcements To All Users\n\n"
+        "Choose An Option Below:"
     )
     admin_kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("📊 Statistics", callback_data="admin_stats"),
@@ -83,8 +83,8 @@ async def ban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = update.message.text.split(None, 2)
     if len(args) < 2:
         return await update.message.reply_text(
-            "❌ Usage: /ban <user_id> [reason]\n"
-            "Example: /ban 123456789 Spam"
+            "❌ Usage : /ban <user_id> [reason]\n"
+            "Example : /ban 123456789 Spam"
         )
     
     try:
@@ -103,9 +103,9 @@ async def ban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             log_msg = format_log_message(user_id, "User", log_data["action"], log_data.get("details", ""))
             await send_log(context, log_msg)
         else:
-            await update.message.reply_text("❌ Failed to ban user")
+            await update.message.reply_text("❌ Failed To Ban User")
     except ValueError:
-        await update.message.reply_text("❌ Invalid user ID")
+        await update.message.reply_text("❌ Invalid User ID")
     except Exception as e:
         await update.message.reply_text(f"❌ Error: {e}")
 
@@ -118,8 +118,8 @@ async def unban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = update.message.text.split()
     if len(args) < 2:
         return await update.message.reply_text(
-            "❌ Usage: /unban <user_id>\n"
-            "Example: /unban 123456789"
+            "❌ Usage : /unban <user_id>\n"
+            "Example : /unban 123456789"
         )
     
     try:
@@ -132,9 +132,9 @@ async def unban_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             log_msg = format_log_message(user_id, "User", log_data["action"])
             await send_log(context, log_msg)
         else:
-            await update.message.reply_text("❌ Failed to unban user")
+            await update.message.reply_text("❌ Failed To Unban User")
     except ValueError:
-        await update.message.reply_text("❌ Invalid user ID")
+        await update.message.reply_text("❌ Invalid User ID")
     except Exception as e:
         await update.message.reply_text(f"❌ Error: {e}")
 
@@ -147,9 +147,9 @@ async def stats_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     stats = get_stats()
     text = (
         "📊 <b>Bot Statistics</b>\n\n"
-        f"👥 Total Users: <b>{stats['total_users']}</b>\n"
-        f"🚫 Banned Users: <b>{stats['banned_users']}</b>\n"
-        f"🖼 Users with Thumbnail: <b>{stats['users_with_thumbnail']}</b>"
+        f"👥 Total Users : <b>{stats['total_users']}</b>\n"
+        f"🚫 Banned Users : <b>{stats['banned_users']}</b>\n"
+        f"🖼 Users With Thumbnail : <b>{stats['users_with_thumbnail']}</b>"
     )
     await update.message.reply_text(text, parse_mode="HTML")
 
@@ -175,19 +175,19 @@ async def status_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         text = (
             "⏱️ <b>Bot Status</b>\n\n"
-            f"🟢 Status: <b>Online</b>\n"
-            f"⏰ Uptime: <b>{uptime_hours}h {uptime_mins}m</b>\n\n"
+            f"🟢 Status : <b>Online</b>\n"
+            f"⏰ Uptime : <b>{uptime_hours}h {uptime_mins}m</b>\n\n"
             f"🖥 <b>System Resources:</b>\n"
-            f"CPU: <b>{cpu_percent}%</b>\n"
-            f"RAM: <b>{ram_percent}%</b> ({ram.used // (1024**2)} MB / {ram.total // (1024**2)} MB)"
+            f"CPU : <b>{cpu_percent}%</b>\n"
+            f"RAM : <b>{ram_percent}%</b> ({ram.used // (1024**2)} MB / {ram.total // (1024**2)} MB)"
         )
         await update.message.reply_text(text, parse_mode="HTML")
     except ImportError:
         text = (
             "⏱️ <b>Bot Status</b>\n\n"
-            f"🟢 Status: <b>Online</b>\n\n"
-            "⚠️ <b>Note:</b> Install <code>psutil</code> for system stats\n"
-            "Run: <code>pip install psutil</code>"
+            f"🟢 Status : <b>Online</b>\n\n"
+            "⚠️ <b>Note :</b> Install <code>psutil</code> for system stats\n"
+            "Run : <code>pip install psutil</code>"
         )
         await update.message.reply_text(text, parse_mode="HTML")
     except Exception as e:
@@ -202,12 +202,12 @@ async def broadcast_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = update.message.text.split(None, 1)
     if len(args) < 2:
         return await update.message.reply_text(
-            "❌ <b>Usage:</b> /broadcast <message>\n\n"
-            "<b>Example:</b> /broadcast Hello everyone! Check out new features!\n\n"
-            "💡 <b>Tips:</b>\n"
-            "• Message will be sent to all active users\n"
-            "• HTML formatting is supported\n"
-            "• Emojis work great too! 🎉",
+            "❌ <b>Usage :</b> /broadcast <message>\n\n"
+            "<b>Example :</b> /broadcast Hello everyone! Check Out This features!\n\n"
+            "💡 <b>Tips</b>\n"
+            "• Message Will Be Sent To All Active Users\n"
+            "• HTML Formatting Is Supported\n"
+            "• Emojis Work Great Too! 🎉",
             parse_mode="HTML"
         )
     
@@ -216,11 +216,11 @@ async def broadcast_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Show confirmation
     confirm_text = (
         "📢 <b>Broadcast Confirmation</b>\n\n"
-        f"<b>Message to send:</b>\n"
+        f"<b>Message To Send</b>\n"
         f"{message_text}\n\n"
-        f"👥 Total Users: <b>{get_total_users()}</b>\n\n"
-        "⚠️ This action cannot be undone!\n"
-        "Proceeding... Messages will be sent now."
+        f"👥 Total Users : <b>{get_total_users()}</b>\n\n"
+        "⚠️ This Action Cannot Be Undone!\n"
+        "Proceeding... Messages Will Be Sent Now."
     )
     msg = await update.message.reply_text(confirm_text, parse_mode="HTML")
     
@@ -235,7 +235,7 @@ async def broadcast_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not user_ids:
             await msg.edit_text(
                 "❌ <b>No Users Found</b>\n\n"
-                "There are no users in the database to broadcast to.",
+                "There Are No Users In The Database To Broadcast To.",
                 parse_mode="HTML"
             )
             return
@@ -248,21 +248,21 @@ async def broadcast_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             try:
                 await context.bot.send_message(
                     chat_id=user_id,
-                    text=f"📢 <b>Announcement from Admin</b>\n\n{message_text}",
+                    text=f"📢 <b>Announcement</b>\n\n{message_text}",
                     parse_mode="HTML"
                 )
                 sent += 1
             except Exception as e:
-                logger.warning(f"Could not send broadcast to user {user_id}: {e}")
+                logger.warning(f"Could Not Send Broadcast To User {user_id}: {e}")
                 failed += 1
         
         # Show final status
         result_text = (
             "✅ <b>Broadcast Completed!</b>\n\n"
-            f"📤 <b>Messages Sent:</b> {sent}\n"
-            f"❌ <b>Failed:</b> {failed}\n"
-            f"👥 <b>Total Users:</b> {sent + failed}\n\n"
-            f"Success Rate: <b>{(sent/(sent+failed)*100):.1f}%</b>"
+            f"📤 <b>Messages Sent :</b> {sent}\n"
+            f"❌ <b>Failed :</b> {failed}\n"
+            f"👥 <b>Total Users :</b> {sent + failed}\n\n"
+            f"Success Rate : <b>{(sent/(sent+failed)*100):.1f}%</b>"
         )
         
         await msg.edit_text(result_text, parse_mode="HTML")
@@ -273,10 +273,10 @@ async def broadcast_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if LOG_CHANNEL_ID:
             log_text = (
                 f"📢 <b>Broadcast Sent</b>\n\n"
-                f"👤 Admin: @{update.message.from_user.username or update.message.from_user.id}\n"
-                f"📤 Messages Sent: {sent}\n"
-                f"❌ Failed: {failed}\n"
-                f"📝 Message:\n{message_text}"
+                f"👤 Admin : @{update.message.from_user.username or update.message.from_user.id}\n"
+                f"📤 Messages Sent : {sent}\n"
+                f"❌ Failed : {failed}\n"
+                f"📝 Message :\n{message_text}"
             )
             await send_log(context, log_text)
         
