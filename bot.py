@@ -732,7 +732,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     "• Instant Thumbnail Apply\n"
                     "• One Thumbnail Per User\n"
                     "• Fast & Simple\n\n"
-                    "🛠 Powered By Python-Telegram-Bot"
+                    "🛠 Powered By @SSBotsUpdates "
                 )
             elif key == "settings":
                 uid = query.from_user.id
