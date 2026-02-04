@@ -732,7 +732,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     "• Instant Thumbnail Apply\n"
                     "• One Thumbnail Per User\n"
                     "• Fast & Simple\n\n"
-                    "🛠 Powered By @SSBotsUpdates "
+                    "🛠 Powered By Python-Telegram-Bot"
                 )
             elif key == "settings":
                 uid = query.from_user.id
@@ -747,10 +747,43 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 ])
                 try:
                     msg = query.message
-                    if getattr(msg, "photo", None):
-                        await msg.edit_caption(text, reply_markup=settings_kb, parse_mode="HTML")
+                    banner = HOME_MENU_BANNER_URL
+                    
+                    # Delete old message and send new one with home banner
+                    try:
+                        await msg.delete()
+                    except Exception:
+                        pass
+                    
+                    if banner:
+                        try:
+                            if isinstance(banner, str) and os.path.isfile(banner):
+                                photo = InputFile(banner)
+                            else:
+                                photo = banner
+                            
+                            await context.bot.send_photo(
+                                chat_id=msg.chat.id,
+                                photo=photo,
+                                caption=text,
+                                reply_markup=settings_kb,
+                                parse_mode="HTML"
+                            )
+                        except Exception as banner_err:
+                            logger.debug(f"Could not send settings banner: {banner_err}")
+                            await context.bot.send_message(
+                                chat_id=msg.chat.id,
+                                text=text,
+                                reply_markup=settings_kb,
+                                parse_mode="HTML"
+                            )
                     else:
-                        await msg.edit_text(text, reply_markup=settings_kb, parse_mode="HTML")
+                        await context.bot.send_message(
+                            chat_id=msg.chat.id,
+                            text=text,
+                            reply_markup=settings_kb,
+                            parse_mode="HTML"
+                        )
                 except Exception as e:
                     logger.debug(f"Settings menu edit error: {e}")
                 return
@@ -773,16 +806,47 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     [InlineKeyboardButton("⬅️ Back", callback_data="menu_back")]
                 ])
                 
-                # Try to edit original message's caption/text first
+                # Delete old message and send new one with home banner for help and about
                 try:
                     msg = query.message
-                    if getattr(msg, "photo", None):
-                        await msg.edit_caption(text, reply_markup=back_kb, parse_mode="HTML")
+                    try:
+                        await msg.delete()
+                    except Exception:
+                        pass
+                    
+                    banner = HOME_MENU_BANNER_URL
+                    
+                    if banner:
+                        try:
+                            if isinstance(banner, str) and os.path.isfile(banner):
+                                photo = InputFile(banner)
+                            else:
+                                photo = banner
+                            
+                            await context.bot.send_photo(
+                                chat_id=msg.chat.id,
+                                photo=photo,
+                                caption=text,
+                                reply_markup=back_kb,
+                                parse_mode="HTML"
+                            )
+                        except Exception as banner_err:
+                            logger.debug(f"Could not send menu banner: {banner_err}")
+                            await context.bot.send_message(
+                                chat_id=msg.chat.id,
+                                text=text,
+                                reply_markup=back_kb,
+                                parse_mode="HTML"
+                            )
                     else:
-                        await msg.edit_text(text, reply_markup=back_kb, parse_mode="HTML")
+                        await context.bot.send_message(
+                            chat_id=msg.chat.id,
+                            text=text,
+                            reply_markup=back_kb,
+                            parse_mode="HTML"
+                        )
                 except Exception as e:
                     logger.debug(f"Menu edit error: {e}")
-                    await context.bot.send_message(chat_id=query.message.chat.id, text=text, reply_markup=back_kb, parse_mode="HTML")
         except Exception as e:
             logger.error(f"Menu error: {e}", exc_info=True)
         return
@@ -1113,7 +1177,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "• Remove Old Thumbnails From Settings\n\n"
         "❓ Need More Help? Contact Support Or Check /About"
     )
-    banner = get_force_banner() if 'get_force_banner' in globals() else None
+    banner = HOME_MENU_BANNER_URL
     if banner:
         try:
             if isinstance(banner, str) and os.path.isfile(banner):
@@ -1147,7 +1211,7 @@ async def about(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📧 For Issues Or Suggestions, Reach Out Anytime\n\n"
         "Thank You For Using Instant Cover Bot! 🎬"
     )
-    banner = get_force_banner() if 'get_force_banner' in globals() else None
+    banner = HOME_MENU_BANNER_URL
     if banner:
         try:
             if isinstance(banner, str) and os.path.isfile(banner):
@@ -1177,6 +1241,16 @@ async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("🖼 Thumbnails", callback_data="submenu_thumbnails")],
         [InlineKeyboardButton("⬅️ Back", callback_data="menu_back")]
     ])
+    banner = HOME_MENU_BANNER_URL
+    if banner:
+        try:
+            if isinstance(banner, str) and os.path.isfile(banner):
+                await update.message.reply_photo(photo=InputFile(banner), caption=text, reply_markup=settings_kb, parse_mode="HTML")
+            else:
+                await update.message.reply_photo(photo=banner, caption=text, reply_markup=settings_kb, parse_mode="HTML")
+            return
+        except Exception:
+            pass
     await update.message.reply_text(text, reply_markup=settings_kb, parse_mode="HTML")
 
 
