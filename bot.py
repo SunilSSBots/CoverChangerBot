@@ -87,45 +87,52 @@ def get_force_banner():
 
 
 async def restart(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Restart the bot with fresh code from upstream"""
     user_id = update.effective_user.id
-    
-    if not is_admin(user_id):
-        await update.message.reply_text("❌ You are not authorized to use this command.")
-        return
-    
-    logger.info(f"🔄 Restart initiated by {user_id}")
-    
-    await update.message.reply_text(
-        "🔄 <b>Restarting Bot...</b>\n\n"
-        "Pulling latest code from repository and restarting...",
-        parse_mode="HTML"
-    )
-    
-    await send_log(context, f"🔄 <b>Bot Restart</b>\nInitiated by user {user_id}")
-    
+
+    if user_id != OWNER_ID:
+        return await update.message.reply_text("❌ You are not authorized.")
+
+    msg = await update.message.reply_text("🔄 Checking for updates from upstream...")
+
     try:
         success = update_from_upstream()
-        if success:
-            logger.info("✅ Code updated successfully, restarting...")
-            await update.message.reply_text(
-                "✅ <b>Updated And Restarting!</b>\n\n"
-                "The Bot Is Restarting With Fresh Code.",
-                parse_mode="HTML"
-            )
-            os.execv(sys.executable, ['python'] + sys.argv)
-        else:
-            logger.error("❌ Update failed")
-            await update.message.reply_text(
+
+        if not success:
+            await msg.edit_text(
                 "❌ <b>Update Failed</b>\n\n"
-                "Could Not Pull Latest Code. Check Logs For Details.",
+                "Could not fetch updates from upstream.\n"
+                "Please check:\n"
+                "• UPSTREAM_REPO is correct\n"
+                "• UPSTREAM_BRANCH is correct\n"
+                "• Internet connection is active\n\n"
+                "Check logs for details.",
                 parse_mode="HTML"
             )
+            logger.error(f"Update failed - bot not restarting")
+            return
+
+        # Update successful - now restart
+        await msg.edit_text(
+            "✅ <b>Update Successful!</b>\n\n"
+            "🔄 Restarting bot with new changes...\n"
+            "<i>Please wait...</i>",
+            parse_mode="HTML"
+        )
+        
+        logger.info("✅ Update completed successfully. Restarting bot...")
+        # Give time for message to be sent
+        await asyncio.sleep(1)
+        
+        # Restart the bot
+        os.execv(sys.executable, [sys.executable] + sys.argv)
+        
     except Exception as e:
-        logger.error(f"❌ Restart failed: {e}")
-        await update.message.reply_text(
-            f"❌ <b>Restart Failed</b>\n\n"
-            f"Error: {str(e)[:100]}",
+        logger.error(f"❌ Error during restart/update: {e}")
+        await msg.edit_text(
+            f"❌ <b>Error During Update</b>\n\n"
+            f"An unexpected error occurred:\n"
+            f"<code>{str(e)[:100]}</code>\n\n"
+            f"Check logs for full details.",
             parse_mode="HTML"
         )
 
