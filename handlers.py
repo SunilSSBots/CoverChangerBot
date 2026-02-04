@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 OWNER_ID = None
 FORCE_SUB_CHANNEL_ID = None
 FORCE_SUB_BANNER_URL = None
+HOME_MENU_BANNER_URL = None
 
 
 async def open_home(update: Update, context: ContextTypes.DEFAULT_TYPE):
