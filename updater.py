@@ -20,20 +20,10 @@ def update_from_upstream() -> bool:
         logger.error("❌ UPSTREAM_REPO Not Set")
         return False
 
-    logger.info(f"🔄 Starting upstream update from {UPSTREAM_REPO} (branch: {UPSTREAM_BRANCH})...")
-
-    # Skip git init if already initialized (avoid permission errors)
-    if not os.path.isdir(".git"):
-        if run_cmd("git init") != 0:
-            logger.error("❌ Failed: Initialize git repository")
-            return False
-        logger.info("✅ Git repository initialized")
-
-    # Configure git user
-    run_cmd("git config user.name 'bot-updater'")
-    run_cmd("git config user.email 'bot@localhost'")
-
     cmds = [
+        "git init",
+        "git config user.name 'bot-updater'",
+        "git config user.email 'bot@localhost'",
         "git add .",
         "git commit -m 'local changes' || true",
         f"git remote remove origin || true",
