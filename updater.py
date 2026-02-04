@@ -1,6 +1,7 @@
 import os
 import subprocess
 import logging
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ def update_from_upstream() -> bool:
     logger.info(f"🔄 Starting upstream update from {UPSTREAM_REPO} (branch: {UPSTREAM_BRANCH})...")
 
     cmds = [
-        ("git init", "Initialize git repository"),
+        ("git init --initial-branch=main", "Initialize git repository"),
         ("git config user.name 'bot-updater'", "Set git user"),
         ("git config user.email 'bot@localhost'", "Set git email"),
         ("git add .", "Stage local changes"),
