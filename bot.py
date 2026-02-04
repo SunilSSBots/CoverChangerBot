@@ -152,6 +152,7 @@ def main() -> None:
     handlers.OWNER_ID = OWNER_ID
     handlers.FORCE_SUB_CHANNEL_ID = FORCE_SUB_CHANNEL_ID
     handlers.FORCE_SUB_BANNER_URL = FORCE_SUB_BANNER_URL
+    handlers.HOME_MENU_BANNER_URL = HOME_MENU_BANNER_URL
     
     # Create the Application
     app = Application.builder().token(TOKEN).post_init(post_init).build()
