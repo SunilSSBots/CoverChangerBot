@@ -105,14 +105,22 @@ async def restart(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await send_log(context, f"🔄 <b>Bot Restart</b>\nInitiated by user {user_id}")
     
     try:
-        await update_from_upstream()
-        logger.info("✅ Code updated successfully, restarting...")
-        await update.message.reply_text(
-            "✅ <b>Updated and Restarting!</b>\n\n"
-            "The bot is restarting with fresh code.",
-            parse_mode="HTML"
-        )
-        os.execv(sys.executable, ['python'] + sys.argv)
+        success = update_from_upstream()
+        if success:
+            logger.info("✅ Code updated successfully, restarting...")
+            await update.message.reply_text(
+                "✅ <b>Updated And Restarting!</b>\n\n"
+                "The Bot Is Restarting With Fresh Code.",
+                parse_mode="HTML"
+            )
+            os.execv(sys.executable, ['python'] + sys.argv)
+        else:
+            logger.error("❌ Update failed")
+            await update.message.reply_text(
+                "❌ <b>Update Failed</b>\n\n"
+                "Could Not Pull Latest Code. Check Logs For Details.",
+                parse_mode="HTML"
+            )
     except Exception as e:
         logger.error(f"❌ Restart failed: {e}")
         await update.message.reply_text(
