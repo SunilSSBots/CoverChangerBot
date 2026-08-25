@@ -1,3 +1,7 @@
+# Join Our Telegram Channel :- @SSBotsUpdates
+# Subscribe YouTube Channel For More Bots Updates :- SunilWebTricks
+# Ask Doubt Contact Me On telegram @Sunil_Sharma_2_0_Bot
+
 """
 MongoDB Database Module for Video Cover Bot
 Handles all database operations for user thumbnails
@@ -30,11 +34,23 @@ except Exception as e:
     users_collection = None
 
 
+# In-memory fallback caches when DB is unavailable
+_memory_cache = {
+    "thumbnails": {},
+    "font_styles": {},
+    "channels": {},
+    "send_modes": {},
+    "captions": {},
+    "banned": {}
+}
+
+
 def save_thumbnail(user_id: int, photo_id: str) -> bool:
     """Save or update user's thumbnail to MongoDB"""
+    _memory_cache["thumbnails"][user_id] = photo_id
     if not DB_AVAILABLE:
-        logger.debug(f"Database not available, skipping thumbnail save for user {user_id}")
-        return False
+        logger.debug(f"Database not available, cached in-memory for user {user_id}")
+        return True
     
     try:
         users_collection.update_one(
@@ -58,33 +74,32 @@ def save_thumbnail(user_id: int, photo_id: str) -> bool:
 def get_thumbnail(user_id: int) -> str | None:
     """Retrieve user's thumbnail from MongoDB"""
     if not DB_AVAILABLE:
-        logger.debug(f"Database not available, cannot get thumbnail for user {user_id}")
-        return None
+        return _memory_cache["thumbnails"].get(user_id)
     
     try:
         user_record = users_collection.find_one({"user_id": user_id})
         if user_record and "photo_id" in user_record:
             logger.info(f"✅ Retrieved thumbnail for user {user_id}")
             return user_record["photo_id"]
-        logger.info(f"⚠️ No thumbnail found for user {user_id}")
-        return None
+        return _memory_cache["thumbnails"].get(user_id)
     except Exception as e:
         logger.error(f"❌ Error retrieving thumbnail: {e}")
-        return None
+        return _memory_cache["thumbnails"].get(user_id)
 
 
 def delete_thumbnail(user_id: int) -> bool:
     """Delete user's thumbnail from MongoDB"""
+    had_thumb = user_id in _memory_cache["thumbnails"]
+    _memory_cache["thumbnails"].pop(user_id, None)
     if not DB_AVAILABLE:
-        logger.debug(f"Database not available, skipping thumbnail delete for user {user_id}")
-        return False
+        return had_thumb
     
     try:
         result = users_collection.update_one(
             {"user_id": user_id},
             {"$unset": {"photo_id": ""}}
         )
-        if result.modified_count > 0:
+        if result.modified_count > 0 or had_thumb:
             logger.info(f"✅ Thumbnail deleted for user {user_id}")
             return True
         logger.info(f"⚠️ No thumbnail to delete for user {user_id}")
@@ -96,6 +111,8 @@ def delete_thumbnail(user_id: int) -> bool:
 
 def has_thumbnail(user_id: int) -> bool:
     """Check if user has a saved thumbnail"""
+    if user_id in _memory_cache["thumbnails"]:
+        return True
     if not DB_AVAILABLE:
         return False
     
@@ -107,6 +124,198 @@ def has_thumbnail(user_id: int) -> bool:
     except Exception as e:
         logger.error(f"❌ Error checking thumbnail: {e}")
         return False
+
+
+"""═══════════════════ FONT STYLE PREFERENCES ═══════════════════"""
+
+def save_font_style(user_id: int, font_style: str) -> bool:
+    """Save user's preferred caption font style"""
+    _memory_cache["font_styles"][user_id] = font_style
+    if not DB_AVAILABLE:
+        return True
+    try:
+        users_collection.update_one(
+            {"user_id": user_id},
+            {
+                "$set": {
+                    "user_id": user_id,
+                    "font_style": font_style,
+                    "font_updated_at": datetime.now()
+                }
+            },
+            upsert=True
+        )
+        logger.info(f"✅ Font style '{font_style}' saved for user {user_id}")
+        return True
+    except Exception as e:
+        logger.error(f"❌ Error saving font style: {e}")
+        return False
+
+
+def get_font_style(user_id: int) -> str:
+    """Get user's preferred caption font style (default: 'bold')"""
+    if user_id in _memory_cache["font_styles"]:
+        return _memory_cache["font_styles"][user_id]
+    if not DB_AVAILABLE:
+        return "bold"
+    try:
+        user_record = users_collection.find_one({"user_id": user_id})
+        if user_record and "font_style" in user_record:
+            return user_record["font_style"]
+        return "bold"
+    except Exception as e:
+        logger.error(f"❌ Error getting font style: {e}")
+        return "bold"
+
+
+"""═══════════════════ DESTINATION CHANNEL ═══════════════════"""
+
+def save_destination_channel(user_id: int, channel_id: str, channel_title: str = "", channel_username: str = "") -> bool:
+    """Save user's destination channel configuration"""
+    channel_data = {
+        "channel_id": channel_id,
+        "channel_title": channel_title,
+        "channel_username": channel_username,
+        "set_at": datetime.now().isoformat()
+    }
+    _memory_cache["channels"][user_id] = channel_data
+    if not DB_AVAILABLE:
+        return True
+    try:
+        users_collection.update_one(
+            {"user_id": user_id},
+            {
+                "$set": {
+                    "user_id": user_id,
+                    "destination_channel": channel_data
+                }
+            },
+            upsert=True
+        )
+        logger.info(f"✅ Destination channel saved for user {user_id}: {channel_id}")
+        return True
+    except Exception as e:
+        logger.error(f"❌ Error saving destination channel: {e}")
+        return False
+
+
+def get_destination_channel(user_id: int) -> dict | None:
+    """Get user's configured destination channel"""
+    if user_id in _memory_cache["channels"]:
+        return _memory_cache["channels"][user_id]
+    if not DB_AVAILABLE:
+        return None
+    try:
+        user_record = users_collection.find_one({"user_id": user_id})
+        if user_record and "destination_channel" in user_record:
+            return user_record["destination_channel"]
+        return None
+    except Exception as e:
+        logger.error(f"❌ Error retrieving destination channel: {e}")
+        return None
+
+
+def delete_destination_channel(user_id: int) -> bool:
+    """Remove user's destination channel"""
+    had_chan = user_id in _memory_cache["channels"]
+    _memory_cache["channels"].pop(user_id, None)
+    if not DB_AVAILABLE:
+        return had_chan
+    try:
+        result = users_collection.update_one(
+            {"user_id": user_id},
+            {"$unset": {"destination_channel": ""}}
+        )
+        return result.modified_count > 0 or had_chan
+    except Exception as e:
+        logger.error(f"❌ Error deleting destination channel: {e}")
+        return False
+
+
+def save_send_mode(user_id: int, mode: str) -> bool:
+    """Save delivery mode: 'both', 'channel_only', 'user_only'"""
+    _memory_cache["send_modes"][user_id] = mode
+    if not DB_AVAILABLE:
+        return True
+    try:
+        users_collection.update_one(
+            {"user_id": user_id},
+            {"$set": {"send_mode": mode}},
+            upsert=True
+        )
+        return True
+    except Exception as e:
+        logger.error(f"❌ Error saving send mode: {e}")
+        return False
+
+
+def get_send_mode(user_id: int) -> str:
+    """Get delivery mode (default: 'both')"""
+    if user_id in _memory_cache["send_modes"]:
+        return _memory_cache["send_modes"][user_id]
+    if not DB_AVAILABLE:
+        return "both"
+    try:
+        user_record = users_collection.find_one({"user_id": user_id})
+        if user_record and "send_mode" in user_record:
+            return user_record["send_mode"]
+        return "both"
+    except Exception as e:
+        logger.error(f"❌ Error getting send mode: {e}")
+        return "both"
+
+
+"""═══════════════════ CUSTOM CAPTION ═══════════════════"""
+
+def save_custom_caption(user_id: int, custom_caption: str) -> bool:
+    """Save custom caption template for user"""
+    _memory_cache["captions"][user_id] = custom_caption
+    if not DB_AVAILABLE:
+        return True
+    try:
+        users_collection.update_one(
+            {"user_id": user_id},
+            {"$set": {"custom_caption": custom_caption}},
+            upsert=True
+        )
+        return True
+    except Exception as e:
+        logger.error(f"❌ Error saving custom caption: {e}")
+        return False
+
+
+def get_custom_caption(user_id: int) -> str | None:
+    """Get user's custom caption template"""
+    if user_id in _memory_cache["captions"]:
+        return _memory_cache["captions"][user_id]
+    if not DB_AVAILABLE:
+        return None
+    try:
+        user_record = users_collection.find_one({"user_id": user_id})
+        if user_record and "custom_caption" in user_record:
+            return user_record["custom_caption"]
+        return None
+    except Exception as e:
+        logger.error(f"❌ Error getting custom caption: {e}")
+        return None
+
+
+def delete_custom_caption(user_id: int) -> bool:
+    """Remove user's custom caption template"""
+    had_cap = user_id in _memory_cache["captions"]
+    _memory_cache["captions"].pop(user_id, None)
+    if not DB_AVAILABLE:
+        return had_cap
+    try:
+        result = users_collection.update_one(
+            {"user_id": user_id},
+            {"$unset": {"custom_caption": ""}}
+        )
+        return result.modified_count > 0 or had_cap
+    except Exception as e:
+        logger.error(f"❌ Error deleting custom caption: {e}")
+        return False
+
 
 
 """═══════════════════ ADMIN FUNCTIONS ═══════════════════"""
