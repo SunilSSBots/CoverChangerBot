@@ -20,4 +20,19 @@ if load_dotenv:
 _config = {k: v for k, v in os.environ.items()}
 config = SimpleNamespace(**_config)
 
-__all__ = ["config"]
+# Common variables for easy direct import
+BOT_TOKEN = getattr(config, "BOT_TOKEN", None) or os.environ.get("BOT_TOKEN", "")
+OWNER_ID = int(os.environ.get("OWNER_ID", "0"))
+ADMIN_ID = OWNER_ID
+FORCE_SUB_CHANNEL_ID = os.environ.get("FORCE_SUB_CHANNEL_ID")
+FORCE_SUB_BANNER_URL = os.environ.get("FORCE_SUB_BANNER_URL")
+FORCE_SUB_CHANNEL_INVITE_LINK = os.environ.get("FORCE_SUB_CHANNEL_INVITE_LINK", "")
+HOME_MENU_BANNER_URL = os.environ.get("HOME_MENU_BANNER_URL")
+OWNER_USERNAME = os.environ.get("OWNER_USERNAME", "")
+LOG_CHANNEL_ID = os.environ.get("LOG_CHANNEL_ID")
+
+__all__ = [
+    "config", "BOT_TOKEN", "OWNER_ID", "ADMIN_ID",
+    "FORCE_SUB_CHANNEL_ID", "FORCE_SUB_BANNER_URL", "FORCE_SUB_CHANNEL_INVITE_LINK",
+    "HOME_MENU_BANNER_URL", "OWNER_USERNAME", "LOG_CHANNEL_ID"
+]
