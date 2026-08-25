@@ -36,11 +36,13 @@
 | Feature | Benefit |
 |---------|---------|
 | 📸 **Upload Photo** | Save custom covers for your videos |
+| ✍️ **13+ Caption Fonts** | Style video captions with unicode fonts via buttons |
+| 📢 **Destination Channel** | Automatically post videos with cover & formatted font to your channel |
 | 🎥 **Instant Apply** | Add covers to any video in seconds |
 | 🔒 **Secure Access** | Force subscribe verification |
 | 👥 **Admin Tools** | Full user management & controls |
 | 📊 **Analytics** | Track users & system metrics |
-| 💾 **Persistent** | MongoDB database integration |
+| 💾 **Persistent** | MongoDB database integration with in-memory caching |
 | 🐳 **Containerized** | Docker deployment ready |
 
 ---
@@ -54,6 +56,9 @@
 |---------|-------------|
 | 📸 **Set Cover** | Upload photo as video thumbnail |
 | 🎬 **Apply Cover** | Add cover to videos instantly |
+| ✍️ **Caption Font Styles** | 13+ fonts: Small Caps, Monospace, Sans Bold/Italic, Serif Bold, Script, Fraktur, Circles, etc. |
+| 📢 **Destination Channel** | Link your Telegram channel; bot automatically forwards processed videos with thumbnail and styled font |
+| 📤 **Delivery Modes** | Choose delivery target: Both (Chat + Channel), Channel Only, or Private Chat Only |
 | ✏️ **Change Cover** | Update cover anytime |
 | 🗑️ **Remove Cover** | Delete saved cover |
 
@@ -329,26 +334,23 @@ You are free to use, modify, and distribute this bot.
 
 ---
 
-## 💬 Support & Community
+## 💬 Support, Updates & Community
 
 <div align="center">
 
-| Support Channel | Action |
+| Channel / Platform | Link & Details |
 |---|---|
+| 📢 **Telegram Updates Channel** | [@SSBotsUpdates](https://t.me/SSBotsUpdates) |
+| 📺 **YouTube Channel** | [SunilWebTricks](https://youtube.com/@SunilWebTricks) |
+| 💬 **Ask Doubts & Contact** | [@Sunil_Sharma_2_0_Bot](https://t.me/Sunil_Sharma_2_0_Bot) |
 | 🐛 **Found a Bug?** | [Create GitHub Issue](../../issues) |
-| 💡 **Feature Request?** | [Open Discussion](../../discussions) |
-| 📧 **Direct Contact** | Message bot owner on Telegram |
 
 ### Show Your Support ⭐
 
-<a href="../../stargazers">
-  <img src="https://img.shields.io/github/stars/yourusername/video-cover-bot?style=social" alt="GitHub Stars">
-</a>
-
 If this bot helped you:
-- ⭐ Star this repository
-- 🔄 Share with friends
-- 📢 Tell others about it
+- ⭐ Subscribe to YouTube: **SunilWebTricks**
+- 📢 Join Telegram Channel: **@SSBotsUpdates**
+- 🔄 Share with friends & developers!
 
 </div>
 
